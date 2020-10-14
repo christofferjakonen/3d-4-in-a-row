@@ -53,6 +53,8 @@ class Application(Frame):
             elif self.board.top_color(event.widget._name%4, event.widget._name//4) == 2:
                 button = event.widget
                 button.config(bg="#FFDDDD")
+
+            self.win(self.board.check_for_win())
             self.switch_player()
         else:
             self.chat_text_message.set("Peg is full, pick another")
@@ -64,6 +66,19 @@ class Application(Frame):
         elif self.player == 2:
             self.chat_text_turn.set("It's blues turn")
             self.player = 1
+
+    def win(self, player):
+        if player:
+            print("Woah...\n"
+                  f"Nice cock player {player}\n"
+                  "Thick but not too flaccid\n"
+                  "Perfect lengh\n"
+                  "A nice 80 degree angle\n"
+                  "Could trim the hair a bit but we'll work on it\n"
+                  "Yep...\n"
+                  "I'd say that's a pretty good cock\n"
+                  "I rate it... 8.5/10\n"
+                  f"Good job player {player}")
 
     def test_print(self):
         print("test")
