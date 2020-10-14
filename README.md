@@ -5,7 +5,7 @@ game.py file does nothing at the moment and is not used, but the plan is to migr
 working to a degree, now to make it presentable
 
 todo in order of importance:
-	add some kind of overview to make the board state clearer for the players
-	refine window layout and general looks
-	score keeping
-	AI player 2?
+1. add some kind of overview to make the board state clearer for the players
+2. refine window layout and general looks
+3. score keeping
+4. AI player 2?
