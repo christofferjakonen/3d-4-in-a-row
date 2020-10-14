@@ -24,6 +24,15 @@ class Board:
             result = self.layers[z].four_in_a_row()
             if result:
                 return result
+        for xy in range(16):
+            counter = []
+            for z in range(4):
+                if self.layers[z].coordinates[xy%4][xy//4]:
+                    counter.append(self.layers[z].coordinates[xy%4][xy//4])
+            if counter == [1,1,1,1]:
+                return 1
+            if counter == [2,2,2,2]:
+                return 2
 
         counter1 = []
         counter2 = []
