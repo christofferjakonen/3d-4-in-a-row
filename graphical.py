@@ -12,6 +12,7 @@ class Application(Frame):
         self.main_buttons = []
         self.board = Board()
         self.player = 1
+        self.game_going = 1
         # create everything in the window
         self.create_widgets()
 
@@ -25,6 +26,7 @@ class Application(Frame):
         self.chat_text_message = StringVar()
         self.turn = Label(self.chat_box, textvariable=self.chat_text_turn)
         self.message = Label(self.chat_box, textvariable=self.chat_text_message)
+        self.restart_button = Button(self.chat_box, text="Restart", command=self.restart)
         self.chat_text_turn.set("It's blues turn")
         self.chat_text_message.set("")
 
@@ -32,6 +34,7 @@ class Application(Frame):
         self.chat_box.grid(row=1, column=0, sticky=NSEW)
         self.turn.grid(row=0, column=0, sticky=W)
         self.message.grid(row=1, column=0, sticky=W)
+        self.restart_button.grid(row=2, column=0, sticky=SW)
         self.overview_box.grid(row=0, column=1, sticky=NSEW, rowspan=2)
 
         self.make_button_grid()
@@ -45,19 +48,21 @@ class Application(Frame):
             self.main_buttons.append(button)
 
     def schmove(self, event):
-        if self.board.place_peg(event.widget._name%4, event.widget._name//4, self.player):
-            self.chat_text_message.set("")
-            if self.board.top_color(event.widget._name%4, event.widget._name//4) == 1:
-                button = event.widget
-                button.config(bg="#DDDDFF")
-            elif self.board.top_color(event.widget._name%4, event.widget._name//4) == 2:
-                button = event.widget
-                button.config(bg="#FFDDDD")
+        if self.game_going:
+            if self.board.place_peg(event.widget._name%4, event.widget._name//4, self.player):
+                self.chat_text_message.set("")
+                if self.board.top_color(event.widget._name%4, event.widget._name//4) == 1:
+                    button = event.widget
+                    button.config(bg="#DDDDFF")
+                elif self.board.top_color(event.widget._name%4, event.widget._name//4) == 2:
+                    button = event.widget
+                    button.config(bg="#FFDDDD")
 
-            self.win(self.board.check_for_win())
-            self.switch_player()
-        else:
-            self.chat_text_message.set("Peg is full, pick another")
+                self.win(self.board.check_for_win())
+                if self.game_going:
+                    self.switch_player()
+            else:
+                self.chat_text_message.set("Peg is full, pick another")
 
     def switch_player(self):
         if self.player == 1:
@@ -67,9 +72,19 @@ class Application(Frame):
             self.chat_text_turn.set("It's blues turn")
             self.player = 1
 
+    def restart(self):
+        self.create_widgets()
+        self.main_buttons = []
+        self.board = Board()
+        self.player = 1
+        self.game_going = True
+
     def win(self, player):
         if player:
-            print("Woah...\n"
+            self.game_going = False
+            self.chat_text_turn.set("")
+            self.chat_text_message.set(f"Player {player} wins!")
+            """print("Woah...\n"
                   f"Nice cock player {player}\n"
                   "Thick but not too flaccid\n"
                   "Perfect lengh\n"
@@ -78,7 +93,7 @@ class Application(Frame):
                   "Yep...\n"
                   "I'd say that's a pretty good cock\n"
                   "I rate it... 8.5/10\n"
-                  f"Good job player {player}")
+                  f"Good job player {player}")"""
 
     def test_print(self):
         print("test")

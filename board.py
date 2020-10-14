@@ -9,7 +9,7 @@ class Board:
         for z in range(4):
             if self.layers[z].coordinates[y][x] == 0:
                 self.layers[z].coordinates[y][x] = player
-                print(f"Placed on x{x}, y{y}, z{z}")
+                print(f"Player {player} placed on x{x}, y{y}, z{z}")
                 return True
         return False
 
