@@ -20,10 +20,13 @@ class Board:
         return None
 
     def check_for_win(self):
+        # check for vertical, horizontal or diagonal 4-in-a-row on a single plane
         for z in range(4):
             result = self.layers[z].four_in_a_row()
             if result:
                 return result
+
+        # check every xy coordinate for a 4-in-a-row on the z axis
         for xy in range(16):
             counter = []
             for z in range(4):
@@ -34,11 +37,11 @@ class Board:
             if counter == [2,2,2,2]:
                 return 2
 
+        # check diagonal multi-plane lines
         counter1 = []
         counter2 = []
         counter3 = []
         counter4 = []
-
         for i in range(4):
             if self.layers[i].coordinates[i][i]:
                 counter1.append(self.layers[i].coordinates[i][i])
@@ -48,11 +51,43 @@ class Board:
                 counter3.append(self.layers[i].coordinates[i][i])
             if self.layers[3-i].coordinates[i][3-i]:
                 counter4.append(self.layers[i].coordinates[i][i])
-
         if counter1 == [1,1,1,1] or counter2 == [1,1,1,1] or counter3 == [1,1,1,1] or counter4 == [1,1,1,1]:
             return 1
         if counter1 == [2,2,2,2] or counter2 == [2,2,2,2] or counter3 == [2,2,2,2] or counter4 == [2,2,2,2]:
             return 2
+
+        # check vertical multi-plane, rising
+        for x in range(4):
+            counter = [self.layers[i].coordinates[i][x] if self.layers[i].coordinates[i][x] else 0 for i in range(4)]
+            if counter == [1,1,1,1]:
+                return 1
+            if counter == [2,2,2,2]:
+                return 2
+
+        # check vertical multi-plane, falling
+        for x in range(4):
+            counter = [self.layers[i].coordinates[3-i][x] if self.layers[i].coordinates[3-i][x] else 0 for i in range(4)]
+            if counter == [1, 1, 1, 1]:
+                return 1
+            if counter == [2, 2, 2, 2]:
+                return 2
+
+        # check horizontal multi-plane, rising
+        for y in range(4):
+            counter = [self.layers[i].coordinates[y][i] if self.layers[i].coordinates[y][i] else 0 for i in range(4)]
+            if counter == [1, 1, 1, 1]:
+                return 1
+            if counter == [2, 2, 2, 2]:
+                return 2
+
+        # check horizontal multi-plane, falling
+        for y in range(4):
+            counter = [self.layers[i].coordinates[y][3-i] if self.layers[i].coordinates[y][3-i] else 0 for i in range(4)]
+            if counter == [1, 1, 1, 1]:
+                return 1
+            if counter == [2, 2, 2, 2]:
+                return 2
+
 
         return False
 

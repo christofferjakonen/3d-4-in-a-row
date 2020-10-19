@@ -7,7 +7,7 @@ class Application(Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.master.title("four")
+        self.master.title("4x4x4")
         self.grid(row=0, column=0, sticky=(N, S, E, W))
         self.main_buttons = []
         self.board = Board()
@@ -37,9 +37,10 @@ class Application(Frame):
         self.restart_button.grid(row=2, column=0, sticky=SW)
         self.overview_box.grid(row=0, column=1, sticky=NSEW, rowspan=2)
 
-        self.make_button_grid()
+        self.create_button_grid()
+        self.create_overview_layers()
 
-    def make_button_grid(self):
+    def create_button_grid(self):
         for b in range(16):
             button = Button(self.main_box, image=self.pixelV, width=98, height=98, compound="c", bg="#FFFFFF", activebackground="#EEEEEE", relief=RAISED, borderwidth=1)
             button.grid(row=b//4, column=b%4, padx=1, pady=1)
@@ -94,6 +95,12 @@ class Application(Frame):
                   "I'd say that's a pretty good cock\n"
                   "I rate it... 8.5/10\n"
                   f"Good job player {player}")"""
+
+    def create_overview_layers(self):
+        pass
+
+    def create_overview_3d(self):
+        pass
 
     def test_print(self):
         print("test")
