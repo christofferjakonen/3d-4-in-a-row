@@ -6,7 +6,7 @@ from graphical import Application
 def main():
     #Game()
     root = tk.Tk()
-    root.geometry("600x600")
+    root.geometry("560x610+100+100")
     app = Application(master=root)
     app.mainloop()
 
