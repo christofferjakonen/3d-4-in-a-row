@@ -123,10 +123,11 @@ class Application(Frame):
             self.game_going = False
             self.chat_text_turn.set("")
             self.chat_text_message.set(f"Player {player} wins!")
+            #  for reference, my friend told me to use this when i asked for a placeholder
             """print("Woah...\n"
                   f"Nice cock player {player}\n"
                   "Thick but not too flaccid\n"
-                  "Perfect lengh\n"
+                  "Perfect length\n"
                   "A nice 80 degree angle\n"
                   "Could trim the hair a bit but we'll work on it\n"
                   "Yep...\n"
