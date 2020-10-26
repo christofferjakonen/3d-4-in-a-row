@@ -63,13 +63,13 @@ class Board:
     def check_z(self):
         # check every xy coordinate for a 4-in-a-row on the z axis
         for xy in range(16):
-            counter = [self.layers[z].coordinates[xy%4][xy//4] for z in range(4) if self.layers[z].coordinates[xy%4][xy//4]]
+            counter = [self.layers[z].coordinates[xy//4][xy%4] if self.layers[z].coordinates[xy//4][xy%4] else 0 for z in range(4) ]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
                 return 2
 
-            return 0
+        return 0
 
     def check_vertical(self):
         # check vertical multi-plane, rising

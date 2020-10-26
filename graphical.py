@@ -62,8 +62,6 @@ class Application(Frame):
                 elif self.board.top_color(event.widget._name//4, event.widget._name%4) == 2:
                     button = event.widget
                     button.config(bg="#FFCCCC")
-
-                #self.update_overview_layers(event.widget._name//4, event.widget._nameE%4, self.player)
                 self.update_overview_layers()
                 self.win(self.board.check_for_win())
                 if self.game_going:
