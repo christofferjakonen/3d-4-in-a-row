@@ -7,17 +7,17 @@ class Board:
 
     def place_peg(self, x, y, player):
         for z in range(4):
-            if self.layers[z].coordinates[y][x] == 0:
-                self.layers[z].coordinates[y][x] = player
-                print(f"Player {player} placed on x{x}, y{y}, z{z}")
+            if self.layers[z].coordinates[x][y] == 0:
+                self.layers[z].coordinates[x][y] = player
+                # print(f"Player {player} placed on x{x}, y{y}, z{z}")
                 return True
         return False
 
     def top_color(self, x, y):
         for z in range(3, -1, -1):
-            if self.layers[z].coordinates[y][x]:
-                return self.layers[z].coordinates[y][x]
-        return None
+            if self.layers[z].coordinates[x][y]:
+                return self.layers[z].coordinates[x][y]
+        return 0
 
     def check_for_win(self):
         # check for vertical, horizontal or diagonal 4-in-a-row on a single plane, for every plane
@@ -25,7 +25,7 @@ class Board:
             result = self.layers[z].four_in_a_row()
             if result:
                 return result
-            
+
         check = self.check_z()
         if check:
             return check
@@ -44,7 +44,7 @@ class Board:
     def check_horizontal(self):
         # check horizontal multi-plane, rising
         for y in range(4):
-            counter = [self.layers[i].coordinates[y][i] if self.layers[i].coordinates[y][i] else 0 for i in range(4)]
+            counter = [self.layers[i].coordinates[y][i] for i in range(4) if self.layers[i].coordinates[y][i]]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
@@ -52,21 +52,18 @@ class Board:
 
         # check horizontal multi-plane, falling
         for y in range(4):
-            counter = [self.layers[i].coordinates[y][3 - i] if self.layers[i].coordinates[y][3 - i] else 0 for i in
-                       range(4)]
+            counter = [self.layers[i].coordinates[y][3 - i] for i in range(4) if self.layers[i].coordinates[y][3 - i]]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
                 return 2
+
         return 0
 
     def check_z(self):
         # check every xy coordinate for a 4-in-a-row on the z axis
         for xy in range(16):
-            counter = []
-            for z in range(4):
-                if self.layers[z].coordinates[xy % 4][xy // 4]:
-                    counter.append(self.layers[z].coordinates[xy % 4][xy // 4])
+            counter = [self.layers[z].coordinates[xy%4][xy//4] for z in range(4) if self.layers[z].coordinates[xy%4][xy//4]]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
@@ -85,8 +82,7 @@ class Board:
 
         # check vertical multi-plane, falling
         for x in range(4):
-            counter = [self.layers[i].coordinates[3 - i][x] if self.layers[i].coordinates[3 - i][x] else 0 for i in
-                       range(4)]
+            counter = [self.layers[i].coordinates[3 - i][x] if self.layers[i].coordinates[3 - i][x] else 0 for i in range(4)]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
@@ -108,6 +104,7 @@ class Board:
 
         return 0
 
+
 class Layer:
     def __init__(self, z):
         self.coordinates = [
@@ -119,21 +116,23 @@ class Layer:
         self.z = z
 
     def four_in_a_row(self):
+        # check rows
         for i in range(4):
-            if self.coordinates[i] == [1,1,1,1]:
+            if self.coordinates[i] == [1, 1, 1, 1]:
                 return 1
-            if self.coordinates[i] == [2,2,2,2]:
+            if self.coordinates[i] == [2, 2, 2, 2]:
                 return 2
+        # check columns
         for column in range(4):
-            counter = []
-            for row in range(4):
-                counter.append(self.coordinates[row][column])
+            counter = [self.coordinates[row][column] for row in range(4)]
             if counter == [1, 1, 1, 1]:
                 return 1
             if counter == [2, 2, 2, 2]:
                 return 2
-        if not self.coordinates[0][0] == 0 and self.coordinates[0][0] == self.coordinates[1][1] == self.coordinates[2][2] == self.coordinates[3][3]:
+        # check diagonals
+        if self.coordinates[0][0] and self.coordinates[0][0] == self.coordinates[1][1] == self.coordinates[2][2] == self.coordinates[3][3]:
             return self.coordinates[0][0]
-        if not self.coordinates[0][3] == 0 and self.coordinates[0][3] == self.coordinates[1][2] == self.coordinates[2][1] == self.coordinates[3][0]:
+        if self.coordinates[0][3] and self.coordinates[0][3] == self.coordinates[1][2] == self.coordinates[2][1] == self.coordinates[3][0]:
             return self.coordinates[0][3]
-        return False
+
+        return 0
