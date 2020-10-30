@@ -1,3 +1,4 @@
+# i don't usually import everything, but i think it's ok for tkinter
 from tkinter import *
 from board import Board
 
@@ -35,10 +36,13 @@ class Application(Frame):
         self.chat_text_message.set("")
         # align everything inside the window
         self.main_box.grid(row=0, column=0, sticky=NSEW, padx=1, pady=1)
-        self.chat_box.grid(row=1, column=0, sticky=NSEW)
+        self.chat_box.grid(row=1, column=0, sticky=NSEW, padx=1, pady=1)
+        self.chat_box.grid_columnconfigure(0, weight=0)
+        self.chat_box.grid_columnconfigure(1, weight=1)
+        self.chat_box.grid_rowconfigure(2, weight=1)
         self.turn.grid(row=0, column=0, sticky=W)
         self.message.grid(row=1, column=0, sticky=W)
-        self.restart_button.grid(row=2, column=0, sticky=SW)
+        self.restart_button.grid(row=2, column=0, sticky=SW, padx=5, pady=5)
         self.overview_box.grid(row=0, column=1, sticky=NSEW, rowspan=2)
         # create the 4x4 button grid
         self.create_button_grid()
@@ -85,6 +89,8 @@ class Application(Frame):
         self.game_going = True
 
     def create_overview_layers(self):
+        self.change_overview_button = Button(self.chat_box, text="Change to\n3d overview", command=self.create_overview_3d)
+        self.change_overview_button.grid(row=2, column=1, sticky=SE, padx=5, pady=5)
         self.overviewlayers = []
         for i in range(4):
             layer = Frame(self.overview_box, width=120, height=120, relief=SUNKEN)
@@ -116,6 +122,7 @@ class Application(Frame):
 
     def create_overview_3d(self):
         # todo figure out some way to make a 3d model
+        # self.change_overview_button = Button(self.chat_box, text="Change to\n3d overview", command=self.create_overview_3d)
         pass
 
     def win(self, player):
